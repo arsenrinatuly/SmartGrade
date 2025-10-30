@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Главная · SmartGrade{% endblock %}
+
+{% block extra_head %}
+<style>
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("{% static 'images/bg_school.png' %}") center/cover no-repeat;
+    opacity: 0.15;
+    z-index: -1;
+  }
+
+  main {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(3px);
+    border-radius: 1.5rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  p.text-muted {
+    font-size: 1.1rem;
+  }
+
+  .home-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 3rem;
+  }
+  .home-cards .card {
+    width: 340px;
+    min-height: 270px;
+    border: 0;
+    border-radius: 1.2rem;
+    box-shadow: 0 6px 24px rgba(0,0,0,.06);
+    transition: all .25s ease;
+    text-align: center;
+    padding: 2.5rem 1.8rem;
+    background: #fff;
+  }
+  .home-cards .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0,0,0,.12);
+  }
+  .home-cards i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  .home-cards h5 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+  }
+  .home-cards p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 1.3rem;
+  }
+  .home-cards .btn {
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.8s ease forwards;
+    opacity: 0;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; transform: none; }
+    from { opacity: 0; transform: translateY(10px); }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="text-center fade-in">
+  <h1 class="fw-bold mb-3">
+    <i class="bi bi-mortarboard-fill text-primary me-2"></i>Добро пожаловать в SmartGrade
+  </h1>
+  <p class="text-muted">Электронный журнал для учителей, учеников и школ</p>
+</div>
+
+{# ====== БЛОК ДЛЯ ДИРЕКТОРА ====== #}
+{% if request.user.role == 'ADMIN' %}
+<div class="home-cards fade-in">
+
+  <div class="card">
+    <i class="bi bi-people-fill text-primary"></i>
+    <h5>Пользователи</h5>
+    <p>Просматривайте всех пользователей и управляйте их ролями.</p>
+    <a href="{% url 'director:user_list' %}" class="btn btn-outline-primary">
+      <i class="bi bi-person-gear me-1"></i>Перейти
+    </a>
+  </div>
+
+  <div class="card">
+    <i class="bi bi-door-open-fill text-success"></i>
+    <h5>Классы</h5>
+    <p>Создавайте, редактируйте и управляйте школьными классами.</p>
+    <a href="{% url 'director:class_list' %}" class="btn btn-outline-success">
+      <i class="bi bi-door-closed me-1"></i>Перейти
+    </a>
+  </div>
+
+  <div class="card">
+    <i class="bi bi-book-half text-warning"></i>
+    <h5>Предметы</h5>
+    <p>Добавляйте предметы и назначайте ответственных учителей.</p>
+    <a href="{% url 'director:subject_list' %}" class="btn btn-outline-warning">
+      <i class="bi bi-journal-text me-1"></i>Перейти
+    </a>
+  </div>
+
+</div>
+
+{# ====== БЛОК ДЛЯ УЧИТЕЛЯ ====== #}
+{% elif request.user.role == 'TEACHER' %}
+<div class="home-cards fade-in">
+
+  <div class="card">
+    <i class="bi bi-clipboard2-check text-success"></i>
+    <h5>Отмечайте посещаемость</h5>
+    <p>Отмечайте присутствие и отсутствие учеников прямо в журнале.</p>
+    <a href="{% url 'journal:attendance_new' %}" class="btn btn-outline-success">
+      <i class="bi bi-person-check me-1"></i>Отметить
+    </a>
+  </div>
+
+  <div class="card">
+    <i class="bi bi-pencil-square text-primary"></i>
+    <h5>Выставляйте оценки</h5>
+    <p>Добавляйте и редактируйте оценки учеников легко и быстро.</p>
+    <a href="{% url 'journal:grade_new' %}" class="btn btn-outline-primary">
+      <i class="bi bi-plus-circle me-1"></i>Добавить оценку
+    </a>
+  </div>
+
+  <div class="card">
+    <i class="bi bi-bar-chart-line text-warning"></i>
+    <h5>Просматривайте успеваемость</h5>
+    <p>Следите за результатами классов и отдельных учеников.</p>
+    <a href="{% url 'journal:teacher_grades' %}" class="btn btn-outline-warning">
+      <i class="bi bi-eye me-1"></i>Посмотреть
+    </a>
+  </div>
+
+</div>
+
+{# ====== БЛОК ДЛЯ УЧЕНИКА ====== #}
+{% elif request.user.role == 'STUDENT' %}
+<div class="home-cards fade-in">
+  <div class="card">
+    <i class="bi bi-book text-primary"></i>
+    <h5>Мои оценки</h5>
+    <p>Просматривайте свои оценки и прогресс по предметам.</p>
+    <a href="{% url 'journal:my_grades' %}" class="btn btn-outline-primary">
+      <i class="bi bi-eye me-1"></i>Открыть
+    </a>
+  </div>
+
+  <div class="card">
+    <i class="bi bi-calendar-check text-success"></i>
+    <h5>Моя посещаемость</h5>
+    <p>Следите за своей посещаемостью и вовремя восполняйте пропуски.</p>
+    <a href="{% url 'journal:my_attendance' %}" class="btn btn-outline-success">
+      <i class="bi bi-eye me-1"></i>Посмотреть
+    </a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

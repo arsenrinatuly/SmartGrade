@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Предметы — SmartGrade{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0"><i class="bi bi-book-half text-primary me-2"></i>Предметы</h2>
+  <a href="{% url 'director:subject_create' %}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Добавить предмет
+  </a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Название</th>
+        <th>Учитель</th>
+        <th>Код</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subject in subjects %}
+      <tr>
+        <td>{{ subject.name }}</td>
+        <td>
+          {% if subject.teacher %}
+            {{ subject.teacher.get_full_name|default:subject.teacher.email }}
+          {% else %}
+            <span class="text-muted">Не назначен</span>
+          {% endif %}
+        </td>
+        <td><code>{{ subject.code }}</code></td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center text-muted py-4">
+          Предметов пока нет
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

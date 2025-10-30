@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Добавить ученика{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-person-plus text-primary me-2"></i>Добавить ученика в {{ view.kwargs.pk }}</h2>
+
+<div class="card shadow-sm p-4">
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Ученик</label>
+      {{ form.student }}
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'director:class_students' view.kwargs.pk %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>Назад
+      </a>
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-circle me-1"></i>Зачислить
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

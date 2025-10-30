@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Уроки · SmartGrade{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h5 m-0">
+    <i class="bi bi-journal-text me-2 text-primary"></i>Уроки
+  </h1>
+
+  {% if request.user.is_authenticated and request.user.role == 'TEACHER' %}
+  <div class="btn-group">
+    <a href="{% url 'journal:attendance_new' %}" class="btn btn-outline-success btn-sm">
+      <i class="bi bi-person-check me-1"></i>Отметить посещаемость
+    </a>
+    <a href="{% url 'journal:grade_new' %}" class="btn btn-outline-primary btn-sm">
+      <i class="bi bi-plus-circle me-1"></i>Добавить оценку
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+{% if object_list %}
+<div class="card sg-card fade-in">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th><i class="bi bi-calendar-event me-1"></i>Дата</th>
+          <th><i class="bi bi-people me-1"></i>Класс</th>
+          <th><i class="bi bi-book-half me-1"></i>Предмет</th>
+          <th><i class="bi bi-person-circle me-1"></i>Учитель</th>
+          <th class="text-end">Действие</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lesson in object_list %}
+        <tr>
+          <td class="text-nowrap">
+            <span class="badge text-bg-light border">
+              <i class="bi bi-calendar2-week me-1"></i>{{ lesson.date|date:"j E Y" }}
+            </span>
+          </td>
+
+          <td>
+            <span class="badge rounded-pill text-bg-primary bg-opacity-10 text-primary">
+              {{ lesson.classroom|default:"—" }}
+            </span>
+          </td>
+
+          <td>
+            <span class="badge rounded-pill text-bg-warning bg-opacity-10 text-warning">
+              {{ lesson.subject|default:"—" }}
+            </span>
+          </td>
+
+          <td class="text-muted small">
+            <i class="bi bi-person-badge me-1"></i>{{ lesson.teacher.email|default:"—" }}
+          </td>
+
+          <td class="text-end">
+            <a href="{% url 'academics:lesson_detail' lesson.pk %}" class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-box-arrow-up-right me-1"></i>Открыть
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if is_paginated %}
+  <div class="card-body border-top">
+    <nav class="d-flex justify-content-between align-items-center">
+      <span class="text-muted small">
+        Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+      </span>
+      <ul class="pagination pagination-sm mb-0">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Назад</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+          <li class="page-item disabled"><span class="page-link">Назад</span></li>
+        {% endif %}
+
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперёд</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Вперёд</span></li>
+          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+
+{% else %}
+<div class="card sg-card fade-in">
+  <div class="card-body text-center py-5">
+    <i class="bi bi-inbox fs-1 text-muted d-block mb-2"></i>
+    <div class="h6 mb-2">Пока нет уроков</div>
+    <p class="text-muted small mb-3">Когда появятся занятия, они отобразятся здесь.</p>
+    {% if request.user.is_authenticated and request.user.role == 'TEACHER' %}
+    <div class="d-inline-flex gap-2">
+      <a href="{% url 'journal:attendance_new' %}" class="btn btn-outline-success btn-sm">
+        <i class="bi bi-person-check me-1"></i>Отметить посещаемость
+      </a>
+      <a href="{% url 'journal:grade_new' %}" class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-plus-circle me-1"></i>Добавить оценку
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

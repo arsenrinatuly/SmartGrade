@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load form_extras %}
+{% block title %}Посещаемость · SmartGrade{% endblock %}
+{% block content %}
+<h1 class="h5 mb-3"><i class="bi bi-person-check me-2"></i>Отметить посещаемость</h1>
+
+<div class="card sg-card">
+  <div class="card-body">
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger mb-3">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <form method="post" class="row g-3">
+      {% csrf_token %}
+
+      <div class="col-md-6">
+        <label class="form-label"><i class="bi bi-journal-text me-1"></i>Урок</label>
+        {{ form.lesson|add_class:"form-select" }}
+        {{ form.lesson.errors }}
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"><i class="bi bi-person me-1"></i>Ученик</label>
+        {{ form.student|add_class:"form-select" }}
+        {{ form.student.errors }}
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"><i class="bi bi-clipboard-check me-1"></i>Статус</label>
+        {{ form.status|add_class:"form-select" }}
+        {{ form.status.errors }}
+      </div>
+
+      <div class="col-md-8">
+        <label class="form-label"><i class="bi bi-chat-text me-1"></i>Комментарий</label>
+        {{ form.comment|add_class:"form-control"|add_placeholder:"Например: опоздал на 10 минут" }}
+        {{ form.comment.errors }}
+      </div>
+
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary">
+          <i class="bi bi-check2-circle me-1"></i>Сохранить
+        </button>
+        <a class="btn btn-outline-secondary" href="{% url 'journal:teacher_attendance' %}">
+          <i class="bi bi-table me-1"></i>К списку посещаемости
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

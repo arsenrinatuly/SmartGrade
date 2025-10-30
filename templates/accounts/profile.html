@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Профиль — SmartGrade{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Профиль пользователя</h2>
+  </div>
+
+  {% if edit_mode or not request.user.profile.bio and not request.user.profile.phone and not request.user.profile.birth_date %}
+  <form method="post" enctype="multipart/form-data" class="card shadow-sm p-4 border-0 mx-auto" style="max-width: 500px;">
+    {% csrf_token %}
+    
+    <div class="mb-3 text-center">
+      {% if form.photo.value %}
+        <img src="{{ form.photo.value.url }}" class="rounded-circle mb-3 shadow"
+             style="width: 120px; height: 120px; object-fit: cover;" alt="Фото профиля">
+      {% endif %}
+      <label for="{{ form.photo.id_for_label }}" class="form-label">Фото профиля</label>
+      {{ form.photo }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.bio.id_for_label }}" class="form-label">О себе</label>
+      {{ form.bio }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Дата рождения</label>
+      {{ form.date_of_birth }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.phone.id_for_label }}" class="form-label">Телефон</label>
+      {{ form.phone }}
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Сохранить</button>
+  </form>
+
+  {% else %}
+  <div class="card shadow-sm border-0 mx-auto text-center p-4" style="max-width: 500px;">
+    {% if request.user.profile.photo %}
+      <img src="{{ request.user.profile.photo.url }}" class="rounded-circle mb-3 shadow"
+           style="width: 120px; height: 120px; object-fit: cover;" alt="Фото профиля">
+    {% else %}
+      <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle mb-3 shadow"
+           style="width: 120px; height: 120px; object-fit: cover;" alt="Фото профиля">
+    {% endif %}
+
+    <h4 class="fw-bold mb-1">{{ request.user.get_full_name|default:request.user.email }}</h4>
+    <p class="text-muted">{{ request.user.get_role_display|default:request.user.role }}</p>
+
+    {% if request.user.profile.bio %}
+      <p class="mt-3"><strong>О себе:</strong> {{ request.user.profile.bio }}</p>
+    {% endif %}
+    {% if request.user.profile.date_of_birth %}
+      <p><strong>Дата рождения:</strong> {{ request.user.profile.date_of_birth|date:"d.m.Y" }}</p>
+    {% endif %}
+    {% if request.user.profile.phone %}
+      <p><strong>Телефон:</strong> {{ request.user.profile.phone }}</p>
+    {% endif %}
+
+    <a href="?edit=true" class="btn btn-outline-primary mt-3">Редактировать профиль</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

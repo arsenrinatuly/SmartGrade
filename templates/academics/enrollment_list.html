@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h5 mb-3">Зачисления</h1>
+<ul>
+  {% for e in enrollments %}
+    <li>{{ e.student }} → {{ e.classroom }} ({{ e.date_enrolled }})</li>
+  {% empty %}
+    <li>Пока нет зачислений</li>
+  {% endfor %}
+</ul>
+{% endblock %}

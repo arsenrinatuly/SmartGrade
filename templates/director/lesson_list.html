@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Список уроков{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-3"><i class="bi bi-journal-text"></i> Список уроков</h3>
+
+  <div class="mb-3 text-end">
+    <a href="{% url 'director:lesson_add' %}" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i> Добавить урок
+    </a>
+  </div>
+
+  <table class="table table-striped align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Дата</th>
+        <th>Класс</th>
+        <th>Предмет</th>
+        <th>Учитель</th>
+        <th>Тема</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lesson in lessons %}
+        <tr>
+          <td>{{ lesson.date }}</td>
+          <td>{{ lesson.classroom }}</td>
+          <td>{{ lesson.subject.name }}</td>
+          <td>{{ lesson.teacher.get_full_name }}</td>
+          <td>{{ lesson.topic|default:"—" }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-3">Уроков пока нет</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
