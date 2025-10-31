@@ -83,7 +83,7 @@ class GradeCreateView(TeacherRequiredMixin, CreateView):
         """
         form = super().get_form(form_class)
 
-        # Уроки только текущего учителя
+
         form.fields["lesson"].queryset = Lesson.objects.filter(
             teacher=self.request.user
         ).order_by("-date")

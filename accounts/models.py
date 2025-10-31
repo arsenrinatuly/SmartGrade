@@ -4,13 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 
 
-#: Валидатор имени и фамилии — только буквы и дефис, от 2 до 30 символов
+
 name_validator = RegexValidator(
     regex=r'^[А-Яа-яA-Za-zЁё-]{2,30}$',
     message="Имя и фамилия могут содержать только буквы и дефис (2–30 символов)."
 )
 
-#: Валидатор телефона — допускает + и от 10 до 15 цифр
+
 phone_validator = RegexValidator(
     regex=r'^\+?\d{10,15}$',
     message="Введите корректный номер телефона, например +71234567890."
@@ -43,7 +43,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='STUDENT')
 
-    # 🧩 Валидаторы добавляем к существующим полям
+
     first_name = models.CharField(
         max_length=30,
         validators=[name_validator],

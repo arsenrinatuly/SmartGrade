@@ -90,7 +90,7 @@
   <p class="text-muted">Электронный журнал для учителей, учеников и школ</p>
 </div>
 
-{# ====== БЛОК ДЛЯ ДИРЕКТОРА ====== #}
+
 {% if request.user.role == 'ADMIN' %}
 <div class="home-cards fade-in">
 
@@ -123,7 +123,6 @@
 
 </div>
 
-{# ====== БЛОК ДЛЯ УЧИТЕЛЯ ====== #}
 {% elif request.user.role == 'TEACHER' %}
 <div class="home-cards fade-in">
 
@@ -156,7 +155,6 @@
 
 </div>
 
-{# ====== БЛОК ДЛЯ УЧЕНИКА ====== #}
 {% elif request.user.role == 'STUDENT' %}
 <div class="home-cards fade-in">
   <div class="card">

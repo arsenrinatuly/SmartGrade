@@ -4,7 +4,7 @@ from academics.models import Subject, ClassRoom, Lesson, Enrollment
 from journal.models import GradeRecord, AttendanceRecord
 
 
-# ---------- Пользователи ----------
+
 class UserSerializer(serializers.ModelSerializer):
     """
     Сериализатор пользователя.
@@ -16,7 +16,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'first_name', 'last_name', 'role']
 
 
-# ---------- Академические сериализаторы ----------
 class SubjectSerializer(serializers.ModelSerializer):
     """
     Сериализатор предмета.
@@ -68,7 +67,6 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = ['id', 'subject', 'classroom', 'teacher', 'date', 'topic']
 
 
-# ---------- Журнал ----------
 class GradeRecordSerializer(serializers.ModelSerializer):
     """
     Сериализатор оценок учеников.

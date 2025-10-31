@@ -51,7 +51,6 @@ def class_report(request, class_id):
 
     enrollments = Enrollment.objects.filter(classroom=classroom).select_related('student')
 
-    # Фильтры по дате и предмету
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     subject = request.GET.get('subject')
@@ -113,13 +112,13 @@ def class_report_pdf(request, class_id):
     normal_style = ParagraphStyle('Normal', parent=styles['Normal'], fontName='DejaVuSans', fontSize=10, leading=12)
     elements = []
 
-    # Заголовок отчёта
+  
     title = Paragraph(f"<b>Отчёт по классу {classroom}</b>", ParagraphStyle('Title', fontName='DejaVuSans', fontSize=16))
     date_info = Paragraph(f"Дата: {datetime.now().strftime('%d.%m.%Y')}", normal_style)
     author_info = Paragraph(f"Сформировал: {request.user.get_full_name()}", normal_style)
     elements += [title, Spacer(1, 12), date_info, author_info, Spacer(1, 20)]
 
-    # Таблица данных
+
     data = [[
         Paragraph("<b>Ученик</b>", normal_style),
         Paragraph("<b>Средний балл</b>", normal_style),
@@ -186,7 +185,6 @@ def student_report_pdf(request, student_id):
     elements.append(Paragraph(f"Сформировал: {request.user.get_full_name()}", normal_style))
     elements.append(Spacer(1, 20))
 
-    # Таблица оценок
     data = [[
         Paragraph("<b>Предмет</b>", normal_style),
         Paragraph("<b>Класс</b>", normal_style),

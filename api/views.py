@@ -12,7 +12,6 @@ from .serializers import (
 )
 
 
-# ---------- Разрешения ----------
 class IsDirector(permissions.BasePermission):
     """Разрешение: доступ только для пользователей с ролью директора (ADMIN)."""
 
@@ -34,7 +33,7 @@ class IsStudent(permissions.BasePermission):
         return request.user.is_authenticated and request.user.role == 'STUDENT'
 
 
-# ---------- API ViewSets ----------
+
 class SubjectViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint: Список и детальная информация о предметах.

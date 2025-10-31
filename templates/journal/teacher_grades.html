@@ -2,7 +2,6 @@
 {% block content %}
 <h1 class="h5 mb-3">Оценки учителя</h1>
 
-<!-- 🔽 Кнопка для скачивания PDF отчёта по классу -->
 {% if object_list %}
   {% with first_grade=object_list.0 %}
     {% if first_grade.lesson.classroom %}
